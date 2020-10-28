@@ -13,6 +13,20 @@ class User(flask_login.UserMixin):
     pass
 
 
+#@app.before_request
+#def before_request():
+#    app.logger.info("hello")
+    #app.logger.info(flask_login.current_user)
+    #app.logger.info(flask_login.current_user.is_authenticated)
+    #app.logger.info(type(flask_login.current_user.is_authenticated))
+#    flask.g.userid = None
+    # if flask_login.current_user.is_authenticated:
+    #     app.logger.info(flask_login.current_user.id)
+    #     flask.g.userid = flask_login.current_user.id
+    #     pass
+        
+
+
 @login_manager.user_loader
 def user_loader(email):
     if email not in users:
@@ -66,7 +80,7 @@ def login():
 @app.route('/protected')
 @flask_login.login_required
 def protected():
-    return flask.render_template('login.html',
+    return flask.render_template('protected.html',
         title = "Protected",
         user = flask_login.current_user.id,
     )
@@ -75,7 +89,9 @@ def protected():
 @app.route('/logout')
 def logout():
     flask_login.logout_user()
-    return 'Logged out'
+    return flask.render_template('logged_out.html',
+        title = "Logged out",
+    )
 
 @login_manager.unauthorized_handler
 def unauthorized_handler():

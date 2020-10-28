@@ -9,4 +9,10 @@
 <body>
   <nav>
     <a href="/">main</a>
+    {% if g.userid %}
+    | Welcome {{ g.userid }} 
+    | <a href="/logout">logout</a>
+    {% else %}
+    | <a href="/login">login</a>
+    {% endif %}
   </nav>
