@@ -1,4 +1,4 @@
-# Small Example of a Flask-based web application with login
+# Example of a Flask-based web app with login
 
 
 Using [flask-login](https://github.com/maxcountryman/flask-login) and based on the example in its README.
