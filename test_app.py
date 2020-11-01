@@ -57,7 +57,6 @@ def test_login_process():
     assert b'<h1>Unauthorized</h1>' in rv.data
 
 
-    # TODO: check invalid user, invalid password
 def test_failed_login_process():
     rv = app.get('/protected')
     assert rv.status == '401 UNAUTHORIZED'
@@ -65,9 +64,9 @@ def test_failed_login_process():
 
     rv = app.post('/login', data = {
         'email': 'foo@bar.tld',
-        'password': 'public'
+        'password': 'wrong password'
     })
     assert rv.status == '401 UNAUTHORIZED'
     #print(rv.data)
-    assert b'Bad Login' == rv.data
+    assert b'<title>Bad Login</title>' in rv.data
     

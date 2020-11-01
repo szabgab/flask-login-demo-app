@@ -13,13 +13,13 @@ class User(flask_login.UserMixin):
     pass
 
 
-#@app.before_request
-#def before_request():
+@app.before_request
+def before_request():
 #    app.logger.info("hello")
     #app.logger.info(flask_login.current_user)
     #app.logger.info(flask_login.current_user.is_authenticated)
     #app.logger.info(type(flask_login.current_user.is_authenticated))
-#    flask.g.userid = None
+    flask.g.userid = None
     # if flask_login.current_user.is_authenticated:
     #     app.logger.info(flask_login.current_user.id)
     #     flask.g.userid = flask_login.current_user.id
@@ -43,12 +43,14 @@ def request_loader(request):
     if email not in users:
         return
 
+    password = request.form.get('password')
+    # TODO: In this simple example we stored the password as plain text
+    # TODO: update the example to use hashes password
+    if password != users[email]['password']:
+        return
+
     user = User()
     user.id = email
-
-    # DO NOT ever store passwords in plaintext and always compare password
-    # hashes using constant-time comparison!
-    user.is_authenticated = request.form['password'] == users[email]['password']
 
     return user
 
@@ -75,10 +77,9 @@ def login():
         flask_login.login_user(user)
         return flask.redirect(flask.url_for('protected'))
 
-    return "Bad Login", 401
-    # return flask.render_template('bad_login.html',
-    #     title = "Bad Login",
-    # )
+    return flask.render_template('protected.html',
+        title = "Bad Login",
+    ), 401
 
 @app.route('/protected')
 @flask_login.login_required
