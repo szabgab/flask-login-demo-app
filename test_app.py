@@ -14,13 +14,12 @@ def test_protected():
     #print(rv.data)
     assert b'<h1>Unauthorized</h1>' in rv.data
 
+# TODO maybe logout should return an error if we are not logged in
 def test_logout():
     rv = app.get('/logout')
     assert rv.status == '200 OK'
-    # assert rv.status == '401 UNAUTHORIZED'
-    # print(rv.data)
-    # assert b'<h1>Unauthorized</h1>' in rv.data
-
+    #print(rv.data)
+    assert b'<title>Logged out</title>' in rv.data
 
 
 def test_login_process():
@@ -33,7 +32,6 @@ def test_login_process():
     assert b'<title>Login</title>' in rv.data
     #print(rv.data)
 
-    # TODO: check invalid user, invalid password
     rv = app.post('/login', data = {
         'email': 'foo@bar.tld',
         'password': 'secret'
@@ -57,3 +55,19 @@ def test_login_process():
     rv = app.get('/protected')
     assert rv.status == '401 UNAUTHORIZED'
     assert b'<h1>Unauthorized</h1>' in rv.data
+
+
+    # TODO: check invalid user, invalid password
+def test_failed_login_process():
+    rv = app.get('/protected')
+    assert rv.status == '401 UNAUTHORIZED'
+    assert b'<h1>Unauthorized</h1>' in rv.data
+
+    rv = app.post('/login', data = {
+        'email': 'foo@bar.tld',
+        'password': 'public'
+    })
+    assert rv.status == '401 UNAUTHORIZED'
+    #print(rv.data)
+    assert b'Bad Login' == rv.data
+    

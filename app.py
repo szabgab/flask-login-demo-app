@@ -75,7 +75,10 @@ def login():
         flask_login.login_user(user)
         return flask.redirect(flask.url_for('protected'))
 
-    return 'Bad login'
+    return "Bad Login", 401
+    # return flask.render_template('bad_login.html',
+    #     title = "Bad Login",
+    # )
 
 @app.route('/protected')
 @flask_login.login_required
