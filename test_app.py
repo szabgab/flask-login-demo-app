@@ -6,6 +6,8 @@ def test_main():
     rv = app.get('/')
     assert rv.status == '200 OK'
     assert b'<h1>Welcome to Flask Login Example</h1>' in rv.data
+    assert b'<a href="/logout">logout</a>' not in rv.data
+    assert b'<a href="/login">login</a>' in rv.data
 
 
 def test_protected():
@@ -69,4 +71,4 @@ def test_failed_login_process():
     assert rv.status == '401 UNAUTHORIZED'
     #print(rv.data)
     assert b'<title>Bad Login</title>' in rv.data
-    
+

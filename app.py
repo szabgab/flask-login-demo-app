@@ -16,13 +16,13 @@ class User(flask_login.UserMixin):
 @app.before_request
 def before_request():
 #    app.logger.info("hello")
-    #app.logger.info(flask_login.current_user)
-    #app.logger.info(flask_login.current_user.is_authenticated)
-    #app.logger.info(type(flask_login.current_user.is_authenticated))
+    # app.logger.info(flask_login.current_user)
+    # app.logger.info(flask_login.current_user.is_authenticated)
+    # app.logger.info(type(flask_login.current_user.is_authenticated))
     flask.g.userid = None
-    # if flask_login.current_user.is_authenticated:
-    #     app.logger.info(flask_login.current_user.id)
-    #     flask.g.userid = flask_login.current_user.id
+    if flask_login.current_user.is_authenticated:
+        app.logger.info(flask_login.current_user.id)
+        flask.g.userid = flask_login.current_user.id
     #     pass
         
 
@@ -56,7 +56,7 @@ def request_loader(request):
 
 
 @app.route("/")
-def hello():
+def main():
     return flask.render_template('main.html',
         title = "Flask Login Example",
     )
